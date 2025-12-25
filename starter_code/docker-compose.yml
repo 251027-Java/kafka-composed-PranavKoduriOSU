@@ -27,13 +27,12 @@ services:
       - "9092:9092"
     environment:
       # TODO: Add the following Kafka environment variables
-      # KAFKA_BROKER_ID: 1
-      # KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      # KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
-      # KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      # KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      # KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_BROKER_ID: 1
+       KAFKA_BROKER_ID: 1
+       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     healthcheck:
       test: ["CMD", "kafka-broker-api-versions", "--bootstrap-server", "localhost:9092"]
       interval: 10s
@@ -41,26 +40,26 @@ services:
       retries: 5
 
   # TODO: Add producer service
-  # producer:
-  #   build: ./producer
-  #   ports:
-  #     - "8080:8080"
-  #   environment:
-  #     SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
-  #   depends_on:
-  #     kafka:
-  #       condition: service_healthy
+  producer:
+     build: ./producer
+     ports:
+       - "8080:8080"
+     environment:
+       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+     depends_on:
+       kafka:
+         condition: service_healthy
 
   # TODO: Add consumer service
-  # consumer:
-  #   build: ./consumer
-  #   ports:
-  #     - "8081:8081"
-  #   environment:
-  #     SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
-  #   depends_on:
-  #     kafka:
-  #       condition: service_healthy
+  consumer:
+     build: ./consumer
+     ports:
+       - "8081:8081"
+     environment:
+       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+     depends_on:
+       kafka:
+         condition: service_healthy
 
 networks:
   default:
